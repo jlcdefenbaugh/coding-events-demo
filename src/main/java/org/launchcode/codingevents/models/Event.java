@@ -1,15 +1,23 @@
 package org.launchcode.codingevents.models;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.util.Objects;
 
 /**
  * Created by Chris Bay
  */
+@Entity
 public class Event {
 
+    @Id
+    @GeneratedValue
     private int id;
-    private static int nextId = 1;
+//    private static int nextId = 1;
 
     @NotBlank(message = "Name is required")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
@@ -33,7 +41,7 @@ public class Event {
     private int numberAttending;
 
     public Event(String name, String description, String contactEmail, String location, boolean registrationRequired, int numberAttending ) {
-        this();
+//        this();
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
@@ -44,10 +52,7 @@ public class Event {
 
     }
 
-    public Event() {
-        this.id = nextId;
-        nextId++;
-    }
+    public Event() {}
 
     public String getName() {
         return name;
@@ -87,6 +92,7 @@ public class Event {
     public void setRegistrationRequired(boolean registrationRequired) {
         this.registrationRequired = registrationRequired;
     }
+
 
     public int getNumberAttending() {
         return numberAttending;
