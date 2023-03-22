@@ -1,5 +1,7 @@
 package org.launchcode.codingevents.models;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -12,22 +14,26 @@ public class User extends AbstractEntity{
     @NotNull
     private String pwHash;
 
-//    private static final BCryptPasswordEncoder encoder =
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public User() {}
 
-
-
-    //constructor takes parameter named password, uses it to set value of pwHash. Never store passwords - will update line by creating hash from given password to store
     public User(String username, String password) {
         this.username = username;
-        this.pwHash = password;
+        this.pwHash = encoder.encode(password); //create hash from given password
     }
-
-
-
 
     public String getUsername() {
         return username;
     }
+
+
+    //User objects responsible for determining if given password is a match for the hash stored by the object - use this method
+    //note - bcrypt does not allow using .equals to compare hashes
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
+    }
+
+
+
 }
